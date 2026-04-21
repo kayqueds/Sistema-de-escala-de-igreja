@@ -1,0 +1,194 @@
+/* ========================================
+   PAGE: ESCALAS (LEADER)
+   Tela para montar escalas de louvor
+   ======================================== */
+
+.escalas {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.escalas-header {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.escalas-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-md) 0;
+  background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.escalas-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.escalas-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.escalas-card {
+  max-width: 400px;
+}
+
+.escalas-date-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Grid de Instrumentos */
+.escalas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.instrument-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.instrument-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-bg-tertiary);
+}
+
+.instrument-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.instrument-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%);
+  color: var(--color-bg-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+}
+
+.instrument-members {
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-accent-primary);
+}
+
+.member-name {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.remove-btn {
+  background: transparent;
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+  font-weight: var(--font-weight-bold);
+}
+
+.remove-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.empty-message {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+  margin: auto;
+  text-align: center;
+}
+
+.instrument-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.escalas-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, rgba(14, 165, 233, 0.05) 100%);
+  border: 1px solid var(--color-accent-primary);
+}
+
+.footer-text {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .escalas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .escalas-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .escalas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .escalas-card {
+    max-width: 100%;
+  }
+}
