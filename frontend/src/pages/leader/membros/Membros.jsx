@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '@/components/common/button/Button';
 import Card from '@/components/common/card/Card';
 import Input from '@/components/common/input/Input';
-import { buscarMembros } from '@/services/membrosService';
+import { buscarMembros, deletarMembro } from '@/services/membrosService';
 
 export default function Membros() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,12 +32,19 @@ export default function Membros() {
     member.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDelete = (id) => {
-    if (window.confirm('Tem certeza que deseja remover este membro?')) {
-      setMembers(members.filter(m => m.id !== id));
-    }
-  };
+const handleDelete = async (id) => {
+  const confirmar = window.confirm(
+    "Tem certeza que deseja remover este membro?"
+  );
 
+  if (!confirmar) return;
+
+  await deletarMembro(id);
+
+  setMembers((prev) =>
+    prev.filter((member) => member.id !== id)
+  );
+};
   const handleEdit = (id) => {
     console.log('Editar membro:', id);
   };
