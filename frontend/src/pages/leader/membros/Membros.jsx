@@ -1,44 +1,32 @@
 import './Membros.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@/components/common/button/Button';
 import Card from '@/components/common/card/Card';
 import Input from '@/components/common/input/Input';
-
-// Mock data
-const mockMembers = [
-  {
-    id: 1,
-    name: 'João Silva',
-    type: 'Membro Regular',
-    functions: ['vocal_ministro', 'violao'],
-    joined: '2023-01-15',
-  },
-  {
-    id: 2,
-    name: 'Maria Santos',
-    type: 'Membro Regular',
-    functions: ['vocal_back'],
-    joined: '2023-02-20',
-  },
-  {
-    id: 3,
-    name: 'Pedro Oliveira',
-    type: 'Membro Regular',
-    functions: ['guitarra', 'baixo'],
-    joined: '2023-03-10',
-  },
-  {
-    id: 4,
-    name: 'Ana Costa',
-    type: 'Líder',
-    functions: ['teclado', 'vocal_ministro'],
-    joined: '2022-06-05',
-  },
-];
+import { buscarMembros } from '@/services/membrosService';
 
 export default function Membros() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [members, setMembers] = useState(mockMembers);
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+  async function carregarMembros() {
+    const dados = await buscarMembros();
+
+    const membrosFormatados = dados.map((m) => ({
+      id: m.id,
+      name: m.nome,
+      type: m.tipo === "lider" ? "Líder" : "Membro Regular",
+      functions: m.funcoes || [],
+      joined: new Date().toISOString()
+    }));
+
+    setMembers(membrosFormatados);
+  }
+
+  carregarMembros();
+}, []);
+
 
   const filteredMembers = members.filter(member =>
     member.name.toLowerCase().includes(searchTerm.toLowerCase())
