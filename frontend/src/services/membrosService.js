@@ -1,5 +1,19 @@
 import { db } from "./firebase";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, addDoc } from "firebase/firestore";
+
+
+
+// criar membro
+export const criarMembro = async (novoMembro) => {
+  try {
+    const docRef = await addDoc(collection(db, "membros"), novoMembro);
+    return docRef.id;
+  } catch (error) {
+    console.error("Erro ao criar membro:", error);
+  }
+};
+
+
 // ler membros
 export const buscarMembros = async () => {
   try {
@@ -26,3 +40,4 @@ export const deletarMembro = async (id) => {
     console.error("Erro ao deletar:", error);
   }
 };
+
