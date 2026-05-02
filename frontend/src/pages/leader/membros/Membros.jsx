@@ -5,6 +5,8 @@ import Card from '@/components/common/card/Card';
 import Input from '@/components/common/input/Input';
 import FormMembro from './FormMembro';
 import Swal from "sweetalert2";
+import Sound from '@/hooks/Sounds'
+
 import {
   buscarMembros,
   criarMembro,
@@ -16,6 +18,7 @@ export default function Membros() {
   const [members, setMembers] = useState([]);
   const [mostrarForm, setMostrarForm] = useState(false);
 
+  const { playSound, listSound } = Sound();
   useEffect(() => {
     carregarMembros();
   }, []);
@@ -39,6 +42,7 @@ export default function Membros() {
   );
 
 const handleDelete = async (id) => {
+  playSound(listSound[2])
   const result = await Swal.fire({
     title: "Tem certeza?",
     text: "Esse membro será removido.",
@@ -49,6 +53,7 @@ const handleDelete = async (id) => {
     confirmButtonText: "Sim, excluir",
     cancelButtonText: "Cancelar"
   });
+  
 
   if (!result.isConfirmed) return;
 
@@ -65,6 +70,7 @@ const handleDelete = async (id) => {
     timer: 1500,
     showConfirmButton: false
   });
+   playSound(listSound[0]);
 };
 
   const handleEdit = (id) => {
@@ -82,7 +88,7 @@ const handleDelete = async (id) => {
       funcoes: dadosForm.funcoes,
       ativo: true
     };
-
+    playSound(listSound[2])
     const result = await Swal.fire({
     title: "Tem certeza?",
     text: "Esse membro será criado.",
@@ -109,6 +115,7 @@ const handleDelete = async (id) => {
     timer: 1500,
     showConfirmButton: false
   });
+  playSound(listSound[0])
 
     await criarMembro(novoMembro);
 

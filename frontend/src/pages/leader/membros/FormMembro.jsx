@@ -3,14 +3,17 @@ import Card from "@/components/common/card/Card";
 import Input from "@/components/common/input/Input";
 import Button from "@/components/common/button/Button";
 import Swal from "sweetalert2";
+import Sound from "@/hooks/Sounds";
 
 export default function FormMembro({ salvarMembro }) {
   const [novoNome, setNovoNome] = useState("");
   const [novoTipo, setNovoTipo] = useState("membro");
   const [novaFuncao, setNovaFuncao] = useState("teclado");
+  const { playSound, listSound } = Sound();
 
   const handleSalvar = () => {
     if (!novoNome.trim()) {
+      playSound(listSound[1])  
       Swal.fire({
         icon: "error",
         title: "Oops...",
