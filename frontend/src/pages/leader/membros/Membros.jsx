@@ -3,20 +3,33 @@ import { useState, useEffect } from 'react';
 import Button from '@/components/common/button/Button';
 import Card from '@/components/common/card/Card';
 import Input from '@/components/common/input/Input';
-import { buscarMembros, deletarMembro } from '@/services/membrosService';
+import FormMembro from './FormMembro';
+import Swal from "sweetalert2";
+import Sound from '@/hooks/Sounds'
+
+import {
+  buscarMembros,
+  criarMembro,
+  deletarMembro
+} from '@/services/membrosService';
 
 export default function Membros() {
   const [searchTerm, setSearchTerm] = useState('');
   const [members, setMembers] = useState([]);
+  const [mostrarForm, setMostrarForm] = useState(false);
 
+  const { playSound, listSound } = Sound();
   useEffect(() => {
+    carregarMembros();
+  }, []);
+
   async function carregarMembros() {
     const dados = await buscarMembros();
 
     const membrosFormatados = dados.map((m) => ({
       id: m.id,
       name: m.nome,
-      type: m.tipo === "lider" ? "Líder" : "Membro Regular",
+      type: m.tipo === 'lider' ? 'Líder' : 'Membro Regular',
       functions: m.funcoes || [],
       joined: new Date().toISOString()
     }));
@@ -24,47 +37,106 @@ export default function Membros() {
     setMembers(membrosFormatados);
   }
 
-  carregarMembros();
-}, []);
-
-
-  const filteredMembers = members.filter(member =>
+  const filteredMembers = members.filter((member) =>
     member.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
 const handleDelete = async (id) => {
-  const confirmar = window.confirm(
-    "Tem certeza que deseja remover este membro?"
-  );
+  playSound(listSound[2])
+  const result = await Swal.fire({
+    title: "Tem certeza?",
+    text: "Esse membro será removido.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Sim, excluir",
+    cancelButtonText: "Cancelar"
+  });
+  
 
-  if (!confirmar) return;
+  if (!result.isConfirmed) return;
 
   await deletarMembro(id);
 
   setMembers((prev) =>
     prev.filter((member) => member.id !== id)
   );
+
+  Swal.fire({
+    title: "Excluído!",
+    text: "Membro removido com sucesso.",
+    icon: "success",
+    timer: 1500,
+    showConfirmButton: false
+  });
+   playSound(listSound[0]);
 };
+
   const handleEdit = (id) => {
     console.log('Editar membro:', id);
   };
 
   const handleAddMember = () => {
-    console.log('Adicionar novo membro');
+    setMostrarForm(true);
+  };
+
+  const salvarMembro = async (dadosForm, id) => {
+    const novoMembro = {
+      nome: dadosForm.nome,
+      tipo: dadosForm.tipo,
+      funcoes: dadosForm.funcoes,
+      ativo: true
+    };
+    playSound(listSound[2])
+    const result = await Swal.fire({
+    title: "Tem certeza?",
+    text: "Esse membro será criado.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Sim, criar",
+    cancelButtonText: "Cancelar"
+  });
+
+  if (!result.isConfirmed) return;
+
+  await criarMembro(id);
+
+  setMembers((prev) =>
+    prev.filter((member) => member.id !== id)
+  );
+
+  Swal.fire({
+    title: "Criado!",
+    text: `Membro criado com sucesso`,
+    icon: "success",
+    timer: 1500,
+    showConfirmButton: false
+  });
+  playSound(listSound[0])
+
+    await criarMembro(novoMembro);
+
+    await carregarMembros();
+  
+    setMostrarForm(false);
   };
 
   const instrumentLabel = (inst) => {
     const labels = {
-      'teclado': 'Teclado',
-      'violao': 'Violão',
-      'guitarra': 'Guitarra',
-      'baixo': 'Baixo',
-      'bateria': 'Bateria',
-      'cajon': 'Cajon',
-      'sax': 'Sax',
-      'vocal_ministro': 'Vocal (Ministro)',
-      'vocal_back': 'Backing Vocal',
+      teclado: 'Teclado',
+      violao: 'Violão',
+      guitarra: 'Guitarra',
+      baixo: 'Baixo',
+      bateria: 'Bateria',
+      cajon: 'Cajon',
+      sax: 'Sax',
+      vocal_ministro: 'Vocal (Ministro)',
+      vocal_back: 'Backing Vocal'
     };
+
     return labels[inst] || inst;
   };
 
@@ -72,11 +144,12 @@ const handleDelete = async (id) => {
     <div className="membros">
       <div className="membros-header">
         <h1 className="membros-title">👥 Membros</h1>
-        <p className="membros-subtitle">Gerencie os membros do ministério de louvor</p>
+        <p className="membros-subtitle">
+          Gerencie os membros do ministério de louvor
+        </p>
       </div>
 
       <div className="membros-container">
-        {/* Controles */}
         <Card className="membros-controls">
           <div className="controls-top">
             <Input
@@ -86,6 +159,7 @@ const handleDelete = async (id) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               fullWidth
             />
+
             <Button
               variant="primary"
               size="md"
@@ -94,12 +168,16 @@ const handleDelete = async (id) => {
               ➕ Adicionar Membro
             </Button>
           </div>
+
           <p className="control-info">
             {filteredMembers.length} de {members.length} membros encontrados
           </p>
         </Card>
 
-        {/* Tabela de Membros */}
+        {mostrarForm && (
+          <FormMembro salvarMembro={salvarMembro} />
+        )}
+
         {filteredMembers.length > 0 ? (
           <div className="membros-table-wrapper">
             <table className="membros-table">
@@ -112,39 +190,58 @@ const handleDelete = async (id) => {
                   <th>Ações</th>
                 </tr>
               </thead>
+
               <tbody>
-                {filteredMembers.map(member => (
+                {filteredMembers.map((member) => (
                   <tr key={member.id}>
                     <td className="cell-name">
-                      <div className="member-avatar">{member.name.charAt(0)}</div>
+                      <div className="member-avatar">
+                        {member.name.charAt(0)}
+                      </div>
                       {member.name}
                     </td>
+
                     <td className="cell-type">
-                      <span className="type-badge">{member.type}</span>
+                      <span className="type-badge">
+                        {member.type}
+                      </span>
                     </td>
+
                     <td className="cell-functions">
                       <div className="functions-tags">
                         {member.functions.map((func, idx) => (
-                          <span key={idx} className="function-tag">
+                          <span
+                            key={idx}
+                            className="function-tag"
+                          >
                             {instrumentLabel(func)}
                           </span>
                         ))}
                       </div>
                     </td>
+
                     <td className="cell-date">
-                      {new Date(member.joined).toLocaleDateString('pt-BR')}
+                      {new Date(member.joined).toLocaleDateString(
+                        'pt-BR'
+                      )}
                     </td>
+
                     <td className="cell-actions">
                       <button
                         className="action-btn edit-btn"
-                        onClick={() => handleEdit(member.id)}
+                        onClick={() =>
+                          handleEdit(member.id)
+                        }
                         title="Editar"
                       >
                         ✎
                       </button>
+
                       <button
                         className="action-btn delete-btn"
-                        onClick={() => handleDelete(member.id)}
+                        onClick={() =>
+                          handleDelete(member.id)
+                        }
                         title="Remover"
                       >
                         ✕
@@ -158,9 +255,15 @@ const handleDelete = async (id) => {
         ) : (
           <Card className="membros-empty">
             <div className="empty-icon">👤</div>
-            <h3 className="empty-title">Nenhum membro encontrado</h3>
+
+            <h3 className="empty-title">
+              Nenhum membro encontrado
+            </h3>
+
             <p className="empty-text">
-              {searchTerm ? 'Tente refinar sua busca' : 'Clique em "Adicionar Membro" para começar'}
+              {searchTerm
+                ? 'Tente refinar sua busca'
+                : 'Clique em "Adicionar Membro" para começar'}
             </p>
           </Card>
         )}
