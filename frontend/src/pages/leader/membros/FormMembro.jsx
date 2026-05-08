@@ -1,18 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "@/components/common/card/Card";
 import Input from "@/components/common/input/Input";
 import Button from "@/components/common/button/Button";
 import Swal from "sweetalert2";
 import Sound from "@/hooks/Sounds";
 
-export default function FormMembro({ salvarMembro }) {
+export default function FormMembro({ salvarMembro, membroEditando }) {
   const [novoNome, setNovoNome] = useState("");
   const [novoTipo, setNovoTipo] = useState("membro");
 
-  // função selecionada no select
   const [novaFuncao, setNovaFuncao] = useState("teclado");
 
-  // lista de funções adicionadas
   const [novasFuncoes, setNovasFuncoes] = useState([]);
 
   const { playSound, listSound } = Sound();
@@ -33,7 +31,19 @@ export default function FormMembro({ salvarMembro }) {
 
     setNovasFuncoes((prev) => [...prev, novaFuncao]);
   };
+useEffect(() => {
+  if (membroEditando) {
+    setNovoNome(membroEditando.name);
 
+    setNovoTipo(
+      membroEditando.type === "Líder"
+        ? "lider"
+        : "membro"
+    );
+
+    setNovasFuncoes(membroEditando.functions || []);
+  }
+}, [membroEditando]);
   // remove função da lista
   const removerFuncao = (funcaoRemover) => {
     setNovasFuncoes((prev) =>
