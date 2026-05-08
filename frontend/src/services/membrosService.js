@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, getDocs, deleteDoc, doc, addDoc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, addDoc, updateDoc } from "firebase/firestore";
 
 
 
@@ -28,6 +28,18 @@ export const buscarMembros = async () => {
   } catch (error) {
     console.error("Erro ao buscar membros:", error);
     return [];
+  }
+};
+// editar membros
+export const atualizarMembro = async (id, dadosAtualizados) => {
+  try {
+    const ref = doc(db, "membros", id);
+
+    await updateDoc(ref, dadosAtualizados);
+
+    console.log("Membro atualizado com sucesso");
+  } catch (error) {
+    console.error("Erro ao atualizar:", error);
   }
 };
 

@@ -10,6 +10,7 @@ import Sound from '@/hooks/Sounds'
 import {
   buscarMembros,
   criarMembro,
+  atualizarMembro,
   deletarMembro
 } from '@/services/membrosService';
 
@@ -17,7 +18,7 @@ export default function Membros() {
   const [searchTerm, setSearchTerm] = useState('');
   const [members, setMembers] = useState([]);
   const [mostrarForm, setMostrarForm] = useState(false);
-
+  const [membroEditando, setMembroEditando] = useState(null);
   const { playSound, listSound } = Sound();
   useEffect(() => {
     carregarMembros();
@@ -73,23 +74,72 @@ const handleDelete = async (id) => {
    playSound(listSound[0]);
 };
 
-  const handleEdit = (id) => {
-    console.log('Editar membro:', id);
-  };
+  const handleEdit = (member) => {
+  setMembroEditando(member);
+  setMostrarForm(true);
+};
 
   const handleAddMember = () => {
     setMostrarForm(true);
   };
 
-  const salvarMembro = async (dadosForm, id) => {
-    const novoMembro = {
-      nome: dadosForm.nome,
-      tipo: dadosForm.tipo,
-      funcoes: dadosForm.funcoes,
-      ativo: true
-    };
-    playSound(listSound[2])
+const salvarMembro = async (dadosForm) => {
+  const novoMembro = {
+    nome: dadosForm.nome,
+    tipo: dadosForm.tipo,
+    funcoes: dadosForm.funcoes,
+    ativo: true
+  };
+
+  playSound(listSound[2]);
+
+  // =========================
+  // UPDATE
+  // =========================
+  if (membroEditando) {
+
     const result = await Swal.fire({
+      title: "Salvar alterações?",
+      text: "Os dados do membro serão atualizados.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sim, atualizar",
+      cancelButtonText: "Cancelar"
+    });
+
+    if (!result.isConfirmed) {
+      setMostrarForm(false);
+      setMembroEditando(null);
+      return;
+    }
+
+    await atualizarMembro(
+      membroEditando.id,
+      novoMembro
+    );
+
+    Swal.fire({
+      title: "Atualizado!",
+      text: "Membro atualizado com sucesso.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false
+    });
+
+    playSound(listSound[0]);
+
+    await carregarMembros();
+
+    setMembroEditando(null);
+    setMostrarForm(false);
+
+    return;
+  }
+
+  // =========================
+  // CREATE
+  // =========================
+  const result = await Swal.fire({
     title: "Tem certeza?",
     text: "Esse membro será criado.",
     icon: "warning",
@@ -100,29 +150,28 @@ const handleDelete = async (id) => {
     cancelButtonText: "Cancelar"
   });
 
-  if (!result.isConfirmed) return;
+  if (!result.isConfirmed) {
+    setMostrarForm(false);
+    return;
+  }
 
-  await criarMembro(id);
-
-  setMembers((prev) =>
-    prev.filter((member) => member.id !== id)
-  );
+  await criarMembro(novoMembro);
 
   Swal.fire({
     title: "Criado!",
-    text: `Membro criado com sucesso`,
+    text: "Membro criado com sucesso",
     icon: "success",
     timer: 1500,
     showConfirmButton: false
   });
-  playSound(listSound[0])
 
-    await criarMembro(novoMembro);
+  playSound(listSound[0]);
 
-    await carregarMembros();
-  
-    setMostrarForm(false);
-  };
+  await carregarMembros();
+
+  setMostrarForm(false);
+};
+
 
   const instrumentLabel = (inst) => {
     const labels = {
@@ -175,7 +224,10 @@ const handleDelete = async (id) => {
         </Card>
 
         {mostrarForm && (
-          <FormMembro salvarMembro={salvarMembro} />
+          <FormMembro
+            salvarMembro={salvarMembro}
+            membroEditando={membroEditando}
+            />
         )}
 
         {filteredMembers.length > 0 ? (
@@ -229,9 +281,7 @@ const handleDelete = async (id) => {
                     <td className="cell-actions">
                       <button
                         className="action-btn edit-btn"
-                        onClick={() =>
-                          handleEdit(member.id)
-                        }
+                        onClick={() => handleEdit(member)}
                         title="Editar"
                       >
                         ✎
