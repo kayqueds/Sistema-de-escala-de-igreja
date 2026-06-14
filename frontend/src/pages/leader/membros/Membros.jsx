@@ -49,8 +49,6 @@ const handleDelete = async (id) => {
     text: "Esse membro será removido.",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#6c757d",
     confirmButtonText: "Sim, excluir",
     cancelButtonText: "Cancelar"
   });
@@ -144,8 +142,6 @@ const salvarMembro = async (dadosForm) => {
     text: "Esse membro será criado.",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#6c757d",
     confirmButtonText: "Sim, criar",
     cancelButtonText: "Cancelar"
   });
