@@ -1,0 +1,123 @@
+/* ========================================
+   PAGE: ERROR 404
+   Página de erro - não encontrado
+   ======================================== */
+
+.error404 {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, #0D1117 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+.error-container {
+  max-width: 600px;
+  width: 100%;
+}
+
+.error-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+  text-align: center;
+}
+
+.error-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.error-code {
+  font-size: 5rem;
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.error-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.error-description {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-relaxed);
+}
+
+.error-illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, rgba(14, 165, 233, 0.05) 100%);
+  border: 2px dashed var(--color-bg-tertiary);
+  border-radius: var(--radius-xl);
+}
+
+.illustration-text {
+  font-size: 4rem;
+  line-height: 1;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.error-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.button-link {
+  text-decoration: none;
+}
+
+.error-footer {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  margin: 0;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-bg-tertiary);
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .error404 {
+    padding: var(--spacing-md);
+  }
+
+  .error-code {
+    font-size: 3.5rem;
+  }
+
+  .error-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .error-description {
+    font-size: var(--font-size-base);
+  }
+
+  .illustration-text {
+    font-size: 2.5rem;
+  }
+}

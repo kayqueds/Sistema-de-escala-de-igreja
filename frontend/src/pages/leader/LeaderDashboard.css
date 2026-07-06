@@ -1,0 +1,26 @@
+/* ========================================
+   PAGE: LEADER DASHBOARD
+   Layout principal com sidebar
+   ======================================== */
+
+.leader-dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.leader-main {
+  flex: 1;
+  overflow-y: auto;
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, #0D1117 100%);
+  padding: var(--spacing-2xl) var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .leader-dashboard {
+    flex-direction: column;
+  }
+
+  .leader-main {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}

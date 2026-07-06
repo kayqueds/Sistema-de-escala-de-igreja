@@ -1,0 +1,181 @@
+/* ========================================
+   PAGE: OCORRÊNCIAS
+   Tela para membros indicarem disponibilidade
+   ======================================== */
+
+.ocorrencias {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, #0D1117 100%);
+  padding: var(--spacing-2xl) var(--spacing-lg);
+}
+
+.ocorrencias-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ocorrencias-header {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.ocorrencias-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-md) 0;
+  background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ocorrencias-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.ocorrencias-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.ocorrencias-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.card-subtitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.ocorrencias-status {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, rgba(14, 165, 233, 0.05) 100%);
+  border: 1px solid var(--color-accent-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.status-info {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+}
+
+.status-label {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.status-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.status-message {
+  text-align: center;
+  color: var(--color-success);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  padding: var(--spacing-md);
+  background: rgba(34, 196, 86, 0.1);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.ocorrencias-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-2xl);
+  gap: var(--spacing-lg);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, transparent 100%);
+  border: 2px dashed var(--color-bg-tertiary);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.empty-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.empty-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text-tertiary);
+  margin: 0;
+  max-width: 400px;
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .ocorrencias {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .ocorrencias-header {
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  .ocorrencias-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .ocorrencias-subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .ocorrencias-content {
+    gap: var(--spacing-lg);
+  }
+
+  .card-subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .status-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status-value {
+    font-size: var(--font-size-xl);
+  }
+
+  .empty-icon {
+    font-size: 2.5rem;
+  }
+}
